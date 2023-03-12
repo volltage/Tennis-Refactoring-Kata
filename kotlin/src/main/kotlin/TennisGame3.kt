@@ -1,19 +1,25 @@
+import kotlin.math.absoluteValue
+
 class TennisGame3(private val p1N: String, private val p2N: String) : TennisGame {
 
     private var p2: Int = 0
     private var p1: Int = 0
 
     override fun getScore(): String {
-        val s: String
-        if (p1 < 4 && p2 < 4 && !(p1 + p2 == 6)) {
-            val p = arrayOf("Love", "Fifteen", "Thirty", "Forty")
-            s = p[p1]
-            return if (p1 == p2) "$s-All" else "$s-${p[p2]}"
+        return if (p1 < 4 && p2 < 4 && p1 + p2 != 6) {
+            val pointsDescriptions = arrayOf("Love", "Fifteen", "Thirty", "Forty")
+            val firstPart = pointsDescriptions[p1]
+            val secondPart = if (p1 == p2) "All" else pointsDescriptions[p2]
+            "$firstPart-$secondPart"
         } else {
-            if (p1 == p2)
-                return "Deuce"
-            s = if (p1 > p2) p1N else p2N
-            return if ((p1 - p2) * (p1 - p2) == 1) "Advantage $s" else "Win for $s"
+             if (p1 == p2)
+                "Deuce"
+            else {
+                val playerWon = if (p1 > p2) p1N else p2N
+                if ((p1 - p2).absoluteValue == 1)
+                    "Advantage $playerWon" else
+                    "Win for $playerWon"
+            }
         }
     }
 
